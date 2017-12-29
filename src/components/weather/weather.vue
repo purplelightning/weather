@@ -1,5 +1,4 @@
 <template>
-
   <div id="weather">
     <header>
       <div class="title">天气预报</div>
@@ -47,25 +46,11 @@
       }
     },
     methods: {
-      //原生AJAX这里不好渲染数据,用来获取图片url
-//      httpRequest(url, callback) {
-//        var xhr = new XMLHttpRequest()
-//        xhr.open('GET', url, true)
-//        xhr.onreadystatechange = function () {
-//          if (xhr.readyState == 4) {
-//            callback(xhr.responseText)
-//          }
-//        }
-//        xhr.send()
-//      },
-//      getImage(result) {
-//        console.log(result+"aa")
-//      },
       setCity() {
         city = this.$refs.city.value
         localStorage.city = city
         url = apiURL + 'key=' + myKey + '&location=' + city
-//        this.httpRequest(url, this.getWeather)
+
         var _this = this
         this.$http.get(url).then(function (res) {
           _this.wea = res.data.HeWeather6
@@ -96,7 +81,7 @@
           _this._initScroll()
 //          test()
 //          test2()
-//          getImage(imageURL)
+//          getImage(districtURL)
           getImage2(imageURL)
         })
       }).catch(function (error) {

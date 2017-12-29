@@ -33,11 +33,22 @@ function ggImage(result) {
     jQuery AJAX
 */
 function getImage2(url) {
-  var ht = $.ajax({
-    url: url, async: false
-  })
-  console.log(ht.responseText)
   console.log("jqueryAJAX")
+  $.ajax({
+    type: 'get',
+    async: false,
+    url: url,
+    dataType: 'jsonp',
+    jsonp: "callback",
+    jsonpCallback: "handlerr",
+    success: function (response, status, xhr) {
+      console.log('状态为：' + status + ',状态是：' + xhr.statusText);
+      alert(xhr.responseText);
+    },
+    error: function (error) {
+      console.log("服务端不支持。。。。");
+    }
+  })
 }
 
 //测试
