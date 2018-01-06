@@ -9,7 +9,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
 #fun
   position: absolute
-  top:80px
+  top:60px
   left:0
   bottom:0
   width:100%

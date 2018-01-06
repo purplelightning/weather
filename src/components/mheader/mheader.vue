@@ -15,15 +15,19 @@ export default {}
 #mheader
   display: flex
   width: 100%
-  height:80px
+  height:60px
   box-sizing:border-box
   background: #eee
-  border:1px solid red
+  border-top:1px solid red
+  border-left:1px solid red
+  border-right:1px solid red
   .tab
     flex:1
-    line-height:80px
+    line-height:60px
     text-align: center
     font-size:18px
     color:red
+    &.active
+      background: #3ffff3;
 
 </style>

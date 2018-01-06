@@ -3,12 +3,12 @@
     <header>
       <div class="title">天气预报</div>
       <input type="text" id="city" placeholder="输入城市名" ref="city"
-             @key.enter="setCity()">
+             @keyup.enter="setCity()">
       <button id="btn" @click="setCity()">查询</button>
     </header>
     <div class="content" ref="content">
       <ul class="wrapper" v-if="wea">
-        <li v-for="item in wea" class="item">
+        <li v-for="(item,index) in wea" class="item">
           <div class="cityName">{{item.basic.location}}</div>
           <ul class="weatherContent">
             <li v-for="dd in item.daily_forecast" class="item-date">
@@ -21,8 +21,11 @@
           </ul>
         </li>
       </ul>
-
+      <div class="wrongtip" v-if="!wea">
+        没找到这个城市
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -42,7 +45,8 @@
   export default {
     data() {
       return {
-        wea: {}
+        wea: {},
+        wflag: true,
       }
     },
     methods: {
@@ -53,7 +57,14 @@
 
         var _this = this
         this.$http.get(url).then(function (res) {
+          _this.wflag = true
           _this.wea = res.data.HeWeather6
+          console.log(res.data.HeWeather6[0].status)
+          if (_this.wea[0].status == 'unknown city') {
+            _this.wea = {}
+            _this.wflag = false
+          }
+          console.log(_this.wflag)
           _this.$nextTick(() => {
             _this._initScroll()
           })
@@ -64,48 +75,46 @@
       _initScroll() {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.content, {
-            click: true
+            click: true,
+            probeType: 3,
           })
         } else {
           this.scroll.refresh()
         }
-      }
+      },
     },
     created() {
       var _this = this
       this.$http.get(url).then(function (res) {
-//        console.log(res.data)
         _this.wea = res.data.HeWeather6
-//        console.log(_this.wea.length)
+//        console.log(_this.wea)
         _this.$nextTick(() => {
           _this._initScroll()
-//          test()
-//          test2()
-//          getImage(districtURL)
-          getImage2(imageURL)
+          getImage(url)
+          getImage2(url)
         })
       }).catch(function (error) {
         console.log(error)
       })
-    }
+    },
   }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   #weather
     position: absolute
-    top: 80px
+    top: 60px
     left: 0
     bottom: 0
     width: 100%
-    background: #46e4ff
+    background: url('../../common/img/paper.jpg')
     header
       width: 100%
       height: 100px
       .title
         margin: 20px auto
         text-align: center
-        color: blue
+        color: #efffff
         font-size: 22px;
       #city
         display: inline-block
@@ -123,9 +132,15 @@
       width: 100%
       overflow: hidden
       text-align: center
+      color: white
       .item
-        margin-bottom: 30px
-        width: 100%
+        margin: 0 auto 30px auto
+        width: 70%
+        border: 2px solid white
+        &.hover
+          border: 2px solid red
+      .aa
+        border: 2px solid black
         .cityName
           font-size: 20px
           text-align: center
@@ -134,6 +149,13 @@
           margin-left: 30%
           .item-date
             margin-bottom: 15px
+    .wrongtip
+      padding: 50px
+      box-sizing: border-box
+      width: 100%
+      height: 100%
+      font-size: 22px
+      color: red
 
 
 </style>
