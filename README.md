@@ -1,6 +1,6 @@
 # weather
 
-> 天气预报
+> 天气预报 vue2.0
 
 ## Build Setup
 
